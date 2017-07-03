@@ -164,12 +164,14 @@ Asterisks indicating a type is a pointer MUST be “attached to” the variable 
 
 Property definitions SHOULD be used in place of naked instance variables whenever possible. Direct instance variable access SHOULD be avoided except in initializer methods (`init`, `initWithCoder:`, etc…), `dealloc` methods and within custom setters and getters. For more information, see [Apple’s docs on using accessor methods in initializer methods and `dealloc`](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmPractical.html#//apple_ref/doc/uid/TP40004447-SW6).
 
+Property definitions SHOULD be used with mamary managment attributes.
+
 **For example:**
 
 ```objc
 @interface NYTSection: NSObject
 
-@property (nonatomic) NSString *headline;
+@property (nonatomic, copy) NSString *headline;
 
 @end
 ```
@@ -204,12 +206,12 @@ UIButton *settingsButton;
 UIButton *setBut;
 ```
 
-A three letter prefix (e.g., `NYT`) MUST be used for class names and constants, however MAY be omitted for Core Data entity names. Constants MUST be camel-case with all words capitalized and prefixed by the related class name for clarity. A two letter prefix (e.g., `NS`) is [reserved for use by Apple](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/DefiningClasses/DefiningClasses.html#//apple_ref/doc/uid/TP40011210-CH3-SW12).
+A first letter prefix (e.g., `k`) MUST be used for constants, however MAY be omitted for Core Data entity names. Constants MUST be camel-case with all words capitalized and prefixed by the related class name for clarity. A two letter prefix (e.g., `NS`) is [reserved for use by Apple](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/DefiningClasses/DefiningClasses.html#//apple_ref/doc/uid/TP40011210-CH3-SW12).
 
 **For example:**
 
 ```objc
-static const NSTimeInterval NYTArticleViewControllerNavigationFadeAnimationDuration = 0.3;
+static const NSTimeInterval kArticleViewControllerNavigationFadeAnimationDuration = 0.3;
 ```
 
 **Not:**
@@ -350,7 +352,7 @@ Constants are RECOMMENDED over in-line string literals or numbers, as they allow
 **For example:**
 
 ```objc
-static NSString * const NYTAboutViewControllerCompanyName = @"The New York Times Company";
+static NSString *const NYTAboutViewControllerCompanyName = @"The New York Times Company";
 
 static const CGFloat NYTImageThumbnailHeight = 50.0;
 ```
@@ -367,10 +369,13 @@ static const CGFloat NYTImageThumbnailHeight = 50.0;
 
 When using `enum`s, the new fixed underlying type specification MUST be used; it provides stronger type checking and code completion. The SDK includes a macro to facilitate and encourage use of fixed underlying types: `NS_ENUM()`.
 
+When decrate `enum`s, we SHOULD at first add `enum_name`Unknown declaration.
+
 **Example:**
 
 ```objc
 typedef NS_ENUM(NSInteger, NYTAdRequestState) {
+    NYTAdRequestStateUnknown = 0,
     NYTAdRequestStateInactive,
     NYTAdRequestStateLoading
 };
